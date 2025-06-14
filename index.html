@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Esat Gürsoy - Portfolyo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0d0d0d;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .shapes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .shape {
+      position: absolute;
+      background: #b56bff55;
+      opacity: 0.2;
+      animation: float linear infinite;
+      top: 110%;
+    }
+
+    .circle {
+      border-radius: 50%;
+    }
+
+    .triangle {
+      width: 0;
+      height: 0;
+      background: none;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 35px solid #b56bff55;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.1;
+      }
+      100% {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0.3;
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+      background: #1a1a1a;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .nav-btn {
+      color: #b56bff;
+      background: transparent;
+      border: 2px solid #b56bff;
+      padding: 10px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .nav-btn:hover {
+      background: #b56bff33;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      z-index: 1;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .profile {
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #b56bff20;
+      transition: all 0.4s ease;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .profile img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .profile:hover {
+      box-shadow: 0 0 30px #b56bff;
+      border-color: #b56bff;
+    }
+
+    h1 {
+      color: #b56bff;
+      font-size: 4.8rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 0.4s;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+      animation-delay: 0.8s;
+      margin-top: 20px;
+    }
+
+    .btn {
+      padding: 16px 32px;
+      background: #1a1a1a;
+      color: #b56bff;
+      border: 2px solid #b56bff;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: radial-gradient(circle, rgba(181,107,255,0.3) 0%, transparent 70%);
+      opacity: 0;
+      transition: 0.4s;
+    }
+
+    .btn:hover::before {
+      opacity: 1;
+    }
+
+    .btn:hover {
+      box-shadow: 0 0 20px rgba(181,107,255,0.5);
+    }
+
+    .about-section, .contact-section, .projects-section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0d0d0d;
+      z-index: 5;
+      padding: 80px 20px 20px;
+      animation: slideIn 1s ease forwards;
+      overflow-y: auto;
+    }
+
+    .about-card, .contact-card {
+      background: #1a1a1a;
+      border: 3px solid #b56bff55;
+      padding: 30px;
+      max-width: 600px;
+      width: 100%;
+      color: white;
+      font-size: 1.2rem;
+      border-radius: 16px;
+      transition: 0.4s;
+      margin: 0 auto;
+    }
+
+    .about-card:hover, .contact-card:hover {
+      box-shadow: 0 0 30px #b56bff;
+      border-color: #b56bff;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .project-card {
+      aspect-ratio: 1 / 1;
+      background-color: #1a1a1a;
+      border: 3px solid #b56bff55;
+      border-radius: 16px;
+      background-size: cover;
+      background-position: center;
+      transition: 0.4s;
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      box-shadow: 0 0 25px #b56bff;
+      border-color: #b56bff;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      color: #fff;
+      background: none;
+      border: 2px solid #b56bff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .back-btn:hover {
+      background: #b56bff33;
+    }
+
+    .image-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .image-overlay.active {
+      display: flex;
+    }
+
+    .enlarged-image {
+      max-width: 90%;
+      max-height: 90%;
+      border: 4px solid #b56bff;
+      border-radius: 16px;
+      box-shadow: 0 0 40px #b56bff;
+      animation: zoomIn 0.3s ease;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: #b56bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(181, 107, 255, 0.5);
+      transition: 0.3s;
+      z-index: 101;
+    }
+
+    .close-btn:hover {
+      background: #8e3fff;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 3rem;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 2.5rem;
+      }
+      
+      .profile {
+        width: 200px;
+        height: 200px;
+      }
+      
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shapes" id="shapes"></div>
+
+  <div class="navbar" id="navbar" style="display:none">
+    <button class="nav-btn" onclick="showAbout()">Hakkında</button>
+    <button class="nav-btn" onclick="showContact()">İletişim</button>
+    <button class="nav-btn" onclick="showProjects()">Projelerime Göz At</button>
+  </div>
+
+  <div class="container" id="mainContent">
+    <div class="profile">
+      <img src="foto.png" alt="Esat Gürsoy">
+    </div>
+    <h1>Merhaba, ben Esat Gürsoy</h1>
+    <div class="btn-group">
+      <button class="btn" onclick="showAbout()">Hakkında</button>
+      <button class="btn" onclick="showContact()">İletişim</button>
+      <button class="btn" onclick="showProjects()">Projelerime Göz At</button>
+    </div>
+  </div>
+
+  <div class="about-section" id="aboutSection">
+    <div class="about-card">
+      <p>Ben bir tasarımcıyım. İstanbul'da yaşıyorum. Yeni Yüzyıl Üniversitesi'nde okuyorum. 20 yaşındayım. Frontend'e ve tasarıma ilgi duyuyorum. Yeni teknolojileri takip ederim ve üretmeyi severim.</p>
+      <button class="back-btn" onclick="goHome()">Ana Sayfaya Dön</button>
+    </div>
+  </div>
+
+  <div class="contact-section" id="contactSection">
+    <div class="contact-card">
+      <p>İletişim Bilgilerim:</p>
+      <p><strong>Instagram:</strong> <a href="https://www.instagram.com/esat_gursoy" target="_blank" style="color:#b56bff">@esat_gursoy</a></p>
+      <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/muhammet-esat-g%C3%BCrsoy-99739231a/" target="_blank" style="color:#b56bff">Profilim</a></p>
+      <button class="back-btn" onclick="goHome()">Ana Sayfaya Dön</button>
+    </div>
+  </div>
+
+  <div class="projects-section" id="projectsSection">
+    <div class="projects-grid">
+      <div class="project-card" style="background-image: url('logo4.png');" data-image="logo4.png"></div>
+      <div class="project-card" style="background-image: url('logo1.jpg');" data-image="logo1.jpg"></div>
+      <div class="project-card" style="background-image: url('logo2.jpg');" data-image="logo2.jpg"></div>
+      <div class="project-card" style="background-image: url('slider3.jpg');" data-image="slider3.jpg"></div>
+      <div class="project-card" style="background-image: url('slider2.jpg');" data-image="slider2.jpg"></div>
+      <div class="project-card" style="background-image: url('slider4.jpg');" data-image="slider4.jpg"></div>
+      <div class="project-card" style="background-image: url('slider6.jpg');" data-image="slider6.jpg"></div>
+      <div class="project-card" style="background-image: url('flyer2.png');" data-image="flyer2.png"></div>
+      <div class="project-card" style="background-image: url('arayuz.png');" data-image="arayuz.png"></div>
+      <div class="project-card" style="background-image: url('app.jpg');" data-image="app.jpg"></div>
+      <div class="project-card" style="background-image: url('robotik.png');" data-image="robotik.png"></div>
+      <div class="project-card" style="background-image: url('tshirt.jpg');" data-image="tshirt.jpg"></div>
+    </div>
+    <button class="back-btn" onclick="goHome()">Ana Sayfaya Dön</button>
+  </div>
+
+  <div class="image-overlay" id="imageOverlay">
+    <button class="close-btn" onclick="closeImageOverlay()">✕ Kapat</button>
+    <img class="enlarged-image" id="enlargedImage" src="" alt="Büyütülmüş Proje Görseli">
+  </div>
+
+  <script>
+    
+    const shapeTypes = ['circle', 'square', 'triangle'];
+    const shapesContainer = document.getElementById('shapes');
+
+    for (let i = 0; i < 30; i++) {
+      const shape = document.createElement('div');
+      const type = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+      const size = Math.floor(Math.random() * 60) + 20;
+      const left = Math.random() * 100;
+      const delay = Math.random() * 10;
+      const duration = 10 + Math.random() * 20;
+
+      shape.className = `shape ${type}`;
+      shape.style.width = type === 'triangle' ? '0px' : `${size}px`;
+      shape.style.height = type === 'triangle' ? '0px' : `${size}px`;
+      shape.style.left = `${left}%`;
+      shape.style.animationDelay = `${delay}s`;
+      shape.style.animationDuration = `${duration}s`;
+
+      shapesContainer.appendChild(shape);
+    }
+
+   
+    function showAbout() {
+      hideAll();
+      document.getElementById('aboutSection').style.display = 'flex';
+      document.getElementById('navbar').style.display = 'flex';
+    }
+
+    function showContact() {
+      hideAll();
+      document.getElementById('contactSection').style.display = 'flex';
+      document.getElementById('navbar').style.display = 'flex';
+    }
+
+    function showProjects() {
+      hideAll();
+      document.getElementById('projectsSection').style.display = 'flex';
+      document.getElementById('navbar').style.display = 'flex';
+    }
+
+    function goHome() {
+      hideAll();
+      document.getElementById('mainContent').style.display = 'flex';
+      document.getElementById('shapes').style.display = 'block';
+      document.getElementById('navbar').style.display = 'none';
+    }
+
+    function hideAll() {
+      document.getElementById('mainContent').style.display = 'none';
+      document.getElementById('aboutSection').style.display = 'none';
+      document.getElementById('contactSection').style.display = 'none';
+      document.getElementById('projectsSection').style.display = 'none';
+      document.getElementById('shapes').style.display = 'none';
+    }
+
+    
+    const projectCards = document.querySelectorAll('.project-card');
+    const imageOverlay = document.getElementById('imageOverlay');
+    const enlargedImage = document.getElementById('enlargedImage');
+
+    projectCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const imageUrl = card.getAttribute('data-image');
+        enlargedImage.src = imageUrl;
+        imageOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeImageOverlay() {
+      imageOverlay.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+   
+    imageOverlay.addEventListener('click', (e) => {
+      if (e.target === imageOverlay) {
+        closeImageOverlay();
+      }
+    });
+
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && imageOverlay.classList.contains('active')) {
+        closeImageOverlay();
+      }
+    });
+
+    
+    window.addEventListener('load', () => {
+      document.getElementById('mainContent').style.display = 'flex';
+    });
+  </script>
+</body>
+</html>
